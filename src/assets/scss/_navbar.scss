@@ -1,0 +1,23 @@
+.navigation-bar {
+  background-color: $background-color;
+  padding: 30px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .nav-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+
+    a {
+      color: $text-color;
+      text-decoration: none;
+      transition: color 0.3s;
+
+      &:hover {
+        color: $capitec-light-blue;
+      }
+    }
+  }
+}

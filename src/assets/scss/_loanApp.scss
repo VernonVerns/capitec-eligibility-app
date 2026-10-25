@@ -1,0 +1,157 @@
+#loan_application {
+  h1 {
+    font-size: 28px;
+    margin-bottom: 1em;
+    color: $capitec-blue;
+  }
+
+  form {
+    .form-heading {
+      margin-bottom: 30px;
+
+      h2 {
+        font-size: 20px;
+        font-weight: 500;
+        font-style: normal;
+        color: $text-color;
+        margin: 0;
+        margin-bottom: 8px;
+      }
+
+      p {
+        font-size: 16px;
+        color: #999;
+        margin: 0;
+      }
+    }
+
+    .form-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      label {
+        font-size: 15px;
+        font-weight: 500;
+        color: $text-color;
+      }
+
+      input,
+      select {
+        width: 100%;
+        min-height: 48px;
+        padding: 0.75rem 1rem;
+        border: 1px solid #cbd3e1;
+        border-radius: 8px;
+        background: #fff;
+        color: $text-color;
+        font: inherit;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+
+        &:focus-visible {
+          outline: none;
+          border-color: $capitec-light-blue;
+          box-shadow: 0 0 0 3px rgba(0, 87, 231, 0.12);
+        }
+
+        &[aria-invalid='true'] {
+          border-color: #c62828;
+        }
+      }
+
+      small {
+        color: #999;
+        font-size: 0.8rem;
+        line-height: 1.4;
+      }
+
+      .field-error {
+        color: #c62828;
+      }
+
+      .loan-amount-display {
+        font-size: 34px;
+        font-weight: 700;
+        color: $text-color;
+      }
+
+      input[type='range'] {
+        -webkit-appearance: none;
+        appearance: none;
+        max-width: 100%;
+        background-color: transparent;
+        cursor: pointer;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none;
+
+        &::-webkit-slider-runnable-track {
+          background: #e2e8f0;
+          height: 8px;
+          border-radius: 4px;
+        }
+
+        &::-moz-range-track {
+          background: #e2e8f0;
+          height: 8px;
+          border-radius: 4px;
+        }
+
+        &::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          height: 24px;
+          width: 24px;
+          border-radius: 50%;
+          background: $capitec-light-blue;
+          border: 2px solid #ffffff;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          margin-top: -8px;
+        }
+
+        ::-moz-range-thumb {
+          height: 24px;
+          width: 24px;
+          border-radius: 50%;
+          background: $capitec-light-blue;
+          border: 2px solid #ffffff;
+          border: none;
+        }
+
+        &::-webkit-slider-thumb:active {
+          background: #1d4ed8;
+        }
+
+        &::-moz-range-thumb:active {
+          background: #1d4ed8;
+        }
+      }
+
+      .slider-labels {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: -15px;
+        font-size: 12px;
+        margin-bottom: 1rem;
+
+        span {
+          color: #999;
+        }
+      }
+
+      .navigation-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+      }
+    }
+  }
+}
