@@ -1,17 +1,16 @@
-
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useLoanApp } from "../../context/LoanAppContext";
-import { getLoanProducts, checkEligibility } from "../../services/loanApi";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useLoanApp } from '../../context/LoanAppContext';
+import { getLoanProducts, checkEligibility } from '../../services/loanApi';
 
 const loanPurpose = [
-    { label: "Debt Consolidation", id: "debt_consolidation" },
-    { label: "Home Improvement", id: "home_improvement" },
-    { label: "Education", id: "education" },
-    { label: "Medical", id: "medical" },
-    { label: "New Vehicle", id: "new_vehicle" },
-    { label: "Used Vehicle", id: "used_vehicle" },
-    { label: "Other", id: "other" },
+    { label: 'Debt Consolidation', id: 'debt_consolidation' },
+    { label: 'Home Improvement', id: 'home_improvement' },
+    { label: 'Education', id: 'education' },
+    { label: 'Medical', id: 'medical' },
+    { label: 'New Vehicle', id: 'new_vehicle' },
+    { label: 'Used Vehicle', id: 'used_vehicle' },
+    { label: 'Other', id: 'other' },
 ];
 
 const LoanDetailsForm = ({ errors = {} }) => {
@@ -20,78 +19,69 @@ const LoanDetailsForm = ({ errors = {} }) => {
 
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const [error, setError] = useState('');
 
     const loanDetails = formData.loanDetails || {};
-    const personalInfo = formData.personalInfo || {};
-    const financialInfo = formData.financialInfo || {};
 
-    // Fetch loan products from the API
     useEffect(() => {
         const loadProducts = async () => {
-        try {
-            setLoading(true);
-            setError("");
+            try {
+                setLoading(true);
+                setError('');
 
-            const data = await getLoanProducts();
+                const data = await getLoanProducts();
 
-            setProducts(data.products ?? data);
-        } catch (err) {
-            console.error("Failed to load loan products:", err);
-            setError("Unable to load loan products. Please try again.");
-        } finally {
-            setLoading(false);
-        }
+                setProducts(data.products ?? data);
+            } catch (err) {
+                console.error('Failed to load loan products:', err);
+                setError('Unable to load loan products. Please try again.');
+            } finally {
+                setLoading(false);
+            }
         };
 
         loadProducts();
     }, []);
 
-    // Match the selected purpose to a loan product
     const selectedProduct = products.find((product) =>
-        product.purposes?.includes(loanDetails.loanPurpose)
+        product.purposes?.includes(loanDetails.loanPurpose),
     );
 
-    // Update loan purpose
     const handlePurposeChange = (event) => {
         const loanPurpose = event.target.value;
 
-        updateSection("loanDetails", {
-        loanPurpose,
-        requestedAmount: "",
-        loanTerm: "",
+        updateSection('loanDetails', {
+            loanPurpose,
+            requestedAmount: '',
+            loanTerm: '',
         });
     };
 
-    // Update amount and term fields
     const handleChange = (event) => {
         const { name, value } = event.target;
 
-        updateSection("loanDetails", {
-        [name]: value,
+        updateSection('loanDetails', {
+            [name]: value,
         });
     };
 
-    // Update the amount slider
     const handleAmountSliderChange = (event) => {
-        updateSection("loanDetails", {
-        requestedAmount: event.target.value,
+        updateSection('loanDetails', {
+            requestedAmount: event.target.value,
         });
     };
 
-    // Navigate back to financial information
     const handleBack = () => {
-        navigate("/loan-application/financial-information");
+        navigate('/loan-application/financial-information');
     };
 
-    // Validate the form before proceeding
     const handleNext = (event) => {
         event.preventDefault();
 
-        setError("");
+        setError('');
 
         if (!selectedProduct) {
-            setError("Please select a valid loan purpose.");
+            setError('Please select a valid loan purpose.');
             return;
         }
 
@@ -99,11 +89,11 @@ const LoanDetailsForm = ({ errors = {} }) => {
         const termMonths = Number(loanDetails.loanTerm);
 
         if (
-            loanDetails.requestedAmount === "" ||
+            loanDetails.requestedAmount === '' ||
             !Number.isFinite(amount) ||
             amount <= 0
         ) {
-            setError("Please enter a valid loan amount.");
+            setError('Please enter a valid loan amount.');
             return;
         }
 
@@ -112,18 +102,15 @@ const LoanDetailsForm = ({ errors = {} }) => {
             amount > selectedProduct.maxAmount
         ) {
             setError(
-            `Please enter an amount between ${formatCurrency(
-                selectedProduct.minAmount
-            )} and ${formatCurrency(selectedProduct.maxAmount)}.`
+                `Please enter an amount between ${formatCurrency(
+                    selectedProduct.minAmount,
+                )} and ${formatCurrency(selectedProduct.maxAmount)}.`,
             );
             return;
         }
 
-        if (
-            loanDetails.termMonths === "" ||
-            !Number.isInteger(termMonths)
-        ) {
-            setError("Please enter a valid repayment term in months.");
+        if (loanDetails.termMonths === '' || !Number.isInteger(termMonths)) {
+            setError('Please enter a valid repayment term in months.');
             return;
         }
 
@@ -132,26 +119,25 @@ const LoanDetailsForm = ({ errors = {} }) => {
             termMonths > selectedProduct.maxTerm
         ) {
             setError(
-            `Please select a term between ${selectedProduct.minTerm} and ${selectedProduct.maxTerm} months.`
+                `Please select a term between ${selectedProduct.minTerm} and ${selectedProduct.maxTerm} months.`,
             );
             return;
         }
 
-        // Save the values using the field names expected by the backend
-        updateSection("loanDetails", {
+        updateSection('loanDetails', {
             productId: selectedProduct.id,
             requestedAmount: amount,
             termMonths,
+            recommendedMax: amount + amount * 0.35, //I made this manual for now because its not working on recommendation from the backend
         });
 
-        navigate("/loan-application/eligibility-results");
+        navigate('/loan-application/eligibility-results');
     };
 
-    
     function formatCurrency(value) {
-        return new Intl.NumberFormat("en-ZA", {
-            style: "currency",
-            currency: "ZAR",
+        return new Intl.NumberFormat('en-ZA', {
+            style: 'currency',
+            currency: 'ZAR',
             maximumFractionDigits: 0,
         }).format(value);
     }
@@ -168,8 +154,8 @@ const LoanDetailsForm = ({ errors = {} }) => {
     if (error && products.length === 0) {
         return (
             <div>
-                <p role="alert">{error}</p>
-                <button type="button" onClick={() => window.location.reload()}>
+                <p role='alert'>{error}</p>
+                <button type='button' onClick={() => window.location.reload()}>
                     Retry
                 </button>
             </div>
@@ -177,29 +163,28 @@ const LoanDetailsForm = ({ errors = {} }) => {
     }
 
     return (
-        <form className="loan-details-form" onSubmit={handleNext}>
-            <div className="form-heading">
+        <form className='loan-details-form' onSubmit={handleNext}>
+            <div className='form-heading'>
                 <h2>Tell us about your loan</h2>
                 <p>
-                    How much would you like to borrow, and what do you plan to use it for?
+                    How much would you like to borrow, and what do you plan to
+                    use it for?
                 </p>
             </div>
 
-            <div className="form-fields">
+            <div className='form-fields'>
                 {/* Loan purpose */}
-                <div className="form-group">
-                    <label htmlFor="loanPurpose">
-                        What is the loan for?
-                    </label>
+                <div className='form-group'>
+                    <label htmlFor='loanPurpose'>What is the loan for?</label>
 
                     <select
-                        id="loanPurpose"
-                        name="loanPurpose"
-                        value={loanDetails.loanPurpose || ""}
+                        id='loanPurpose'
+                        name='loanPurpose'
+                        value={loanDetails.loanPurpose || ''}
                         onChange={handlePurposeChange}
                         required
                     >
-                        <option value="" disabled>
+                        <option value='' disabled>
                             Select loan purpose
                         </option>
 
@@ -210,134 +195,136 @@ const LoanDetailsForm = ({ errors = {} }) => {
                         ))}
                     </select>
 
-                    <div className="error-and-helper">
+                    <div className='error-and-helper'>
                         {errors.loanPurpose && (
-                            <small className="error">
+                            <small className='error'>
                                 {errors.loanPurpose}
                             </small>
                         )}
                     </div>
                 </div>
 
-                {/* Display fields only after finding a matching product */}
                 {selectedProduct ? (
                     <>
-
-                        {/* Loan amount */}
-                        <div className="form-group">
-                            <label htmlFor="requestedAmountSlider">
+                        <div className='form-group'>
+                            <label htmlFor='requestedAmountSlider'>
                                 How much would you like to borrow?
                             </label>
 
-                            <div className="loan-amount-display">
+                            <div className='loan-amount-display'>
                                 {formatCurrency(amount)}
                             </div>
 
                             <input
-                                type="range"
-                                id="requestedAmountSlider"
+                                type='range'
+                                id='requestedAmountSlider'
                                 min={minAmount}
                                 max={maxAmount}
-                                step="1000"
+                                step='1000'
                                 value={Math.min(
                                     maxAmount,
-                                    Math.max(minAmount, amount)
+                                    Math.max(minAmount, amount),
                                 )}
                                 onChange={handleAmountSliderChange}
-                                aria-label="Requested loan amount slider"
+                                aria-label='Requested loan amount slider'
                             />
 
-                            <div className="slider-labels">
+                            <div className='slider-labels'>
                                 <span>{formatCurrency(minAmount)}</span>
                                 <span>{formatCurrency(maxAmount)}</span>
                             </div>
 
-                            <label htmlFor="requestedAmount">
+                            <label htmlFor='requestedAmount'>
                                 Or enter an exact amount (R)
                             </label>
 
                             <input
-                                type="number"
-                                id="requestedAmount"
-                                name="requestedAmount"
-                                value={loanDetails.requestedAmount || ""}
+                                type='number'
+                                id='requestedAmount'
+                                name='requestedAmount'
+                                value={loanDetails.requestedAmount || ''}
                                 onChange={handleChange}
-                                placeholder="e.g. 50000"
+                                placeholder='e.g. 50000'
                                 min={minAmount}
                                 max={maxAmount}
-                                step="1000"
+                                step='1000'
                                 required
                             />
 
-                            <div className="error-and-helper">
+                            <div className='error-and-helper'>
                                 {errors.requestedAmount ? (
-                                <small className="error">
-                                    {errors.requestedAmount}
-                                </small>
+                                    <small className='error'>
+                                        {errors.requestedAmount}
+                                    </small>
                                 ) : (
-                                <small className="helper-text">
-                                    Choose an amount between {formatCurrency(minAmount)}{" "}
-                                    and {formatCurrency(maxAmount)}.
-                                </small>
+                                    <small className='helper-text'>
+                                        Choose an amount between{' '}
+                                        {formatCurrency(minAmount)} and{' '}
+                                        {formatCurrency(maxAmount)}.
+                                    </small>
                                 )}
                             </div>
                         </div>
 
-                        {/* Loan term */}
-                        <div className="form-group">
-                            <label htmlFor="loanTerm">
+                        <div className='form-group'>
+                            <label htmlFor='loanTerm'>
                                 How long would you like to repay the loan?
+                                (Months)
                             </label>
 
                             <input
-                                type="number"
-                                id="loanTerm"
-                                name="loanTerm"
-                                value={loanDetails.loanTerm || ""}
+                                type='number'
+                                id='loanTerm'
+                                name='loanTerm'
+                                value={loanDetails.loanTerm || ''}
                                 onChange={handleChange}
-                                placeholder="e.g. 12"
+                                placeholder='e.g. 12'
                                 min={selectedProduct.minTerm}
                                 max={selectedProduct.maxTerm}
                                 required
                             />
 
-                            <div className="error-and-helper">
+                            <div className='error-and-helper'>
                                 {errors.loanTerm ? (
-                                <small className="error">
-                                    {errors.loanTerm}
-                                </small>
+                                    <small className='error'>
+                                        {errors.loanTerm}
+                                    </small>
                                 ) : (
-                                <small className="helper-text">
-                                    Minimum is {selectedProduct.minTerm} months
-                                    and maximum is {selectedProduct.maxTerm} months.
-                                </small>
+                                    <small className='helper-text'>
+                                        Minimum is {selectedProduct.minTerm}{' '}
+                                        months and maximum is{' '}
+                                        {selectedProduct.maxTerm} months.
+                                    </small>
                                 )}
                             </div>
                         </div>
                     </>
                 ) : (
-                    <p className="helper-text">
+                    <p className='helper-text'>
                         {loanDetails.loanPurpose
-                        ? "No loan product matches this purpose. Please select another purpose."
-                        : "Select a loan purpose to view the available loan options and limits."}
+                            ? 'No loan product matches this purpose. Please select another purpose.'
+                            : 'Select a loan purpose to view the available loan options.'}
                     </p>
                 )}
 
-                {error && <p className="error" role="alert">{error}</p>}
+                {error && (
+                    <p className='error' role='alert'>
+                        {error}
+                    </p>
+                )}
 
-                {/* Navigation */}
-                <div className="navigation-buttons">
+                <div className='navigation-buttons'>
                     <button
-                        type="button"
-                        className="back-button secondary-btn"
+                        type='button'
+                        className='back-button secondary-btn'
                         onClick={handleBack}
                     >
                         Back
                     </button>
 
                     <button
-                        type="submit"
-                        className="next-button main-btn"
+                        type='submit'
+                        className='next-button main-btn'
                         disabled={!selectedProduct}
                     >
                         Check Eligibility

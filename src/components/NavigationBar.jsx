@@ -6,7 +6,7 @@ const NavigationBar = () => {
         <div className="logo">
             <img src="https://www.capitecbank.co.za/Static/capitec_v2/dist/assets/images/capitec-logo.svg" alt="Capitec Logo" />
         </div>
-        <ul className="nav-links">
+        <ul className="nav-links hide-mobile">
             <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
             <li><a href="/contact">Contact</a></li>

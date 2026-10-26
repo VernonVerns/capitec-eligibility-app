@@ -278,6 +278,7 @@ const checkEligibility = async (req, res, next) => {
         productId: product.id,
         productName: product.name,
         amount: requestedAmount,
+        recommendedMax: product.maxAmount,
         termMonths,
         interestRate,
         ...repayment,

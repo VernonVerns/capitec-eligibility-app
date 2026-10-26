@@ -10,174 +10,191 @@ $background-color: #ffffff;
 $transition: all 0.45s ease-in-out;
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
-  color: $text-color;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    color: $text-color;
 }
 
 html,
 body {
-  height: 100%;
-  background-color: $background-color;
+    height: 100%;
+    background-color: $background-color;
 }
 
 hr {
-  border: 2px solid $capitec-grey;
-  border-bottom: 0;
-  border-left: 0;
-  border-right: 0;
-  margin: 2em 0;
+    border: 2px solid $capitec-grey;
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+    margin: 2em 0;
 }
 
 .btn-style {
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1.5px solid $capitec-light-blue;
-  padding: 0.8rem 1.5rem;
-  border-radius: 50px;
-  max-width: 100%;
-  min-width: 144px;
-  font-weight: 600;
-  font-size: 16px;
-  font-style: normal;
-  text-align: center;
-  vertical-align: middle;
-  box-shadow: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-decoration: none;
-  cursor: pointer;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid $capitec-light-blue;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    max-width: 100%;
+    min-width: 144px;
+    font-weight: 600;
+    font-size: clamp(14px, 4.5vw, 16px);
+    font-style: normal;
+    text-align: center;
+    vertical-align: middle;
+    box-shadow: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .main-btn {
-  @extend .btn-style;
-  background-color: $capitec-light-blue;
-  color: #ffffff;
-  transition: $transition;
-
-  &:hover {
+    @extend .btn-style;
+    background-color: $capitec-light-blue;
+    color: #ffffff;
     transition: $transition;
-    background-color: darken($capitec-light-blue, 10%);
-  }
+
+    &:hover {
+        transition: $transition;
+        background-color: darken($capitec-light-blue, 10%);
+    }
 }
 
 .secondary-btn {
-  @extend .btn-style;
-  background-color: transparent;
-  color: $capitec-light-blue;
-  transition: $transition;
-
-  &:hover {
+    @extend .btn-style;
+    background-color: transparent;
+    color: $capitec-light-blue;
     transition: $transition;
-    background-color: darken($capitec-light-blue, 10%);
-    color: $background-color;
-  }
+
+    &:hover {
+        transition: $transition;
+        background-color: darken($capitec-light-blue, 10%);
+        color: $background-color;
+    }
 }
 
 .progress-indicator {
-  width: 100%;
-  margin-bottom: 22px;
+    width: 100%;
+    margin-bottom: 22px;
 
-  .step {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    .step {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
 
-    .title-header {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: baseline;
+        .title-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: baseline;
 
-      h3 {
-        color: $capitec-light-blue;
-      }
+            h3 {
+                color: $capitec-light-blue;
+                font-size: clamp(16px, 4.5vw, 22px);
+            }
 
-      span {
-        font-size: 14px;
-        color: $text-color;
-      }
+            span {
+                font-size: clamp(10px, 3.5vw, 14px);
+                color: $text-color;
+            }
+        }
+
+        .progress-container {
+            background-color: $capitec-grey;
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+
+            .progress-bar {
+                background-color: $capitec-light-blue;
+                content: '';
+                height: 4px;
+                border-radius: 2px;
+                z-index: 1;
+            }
+        }
     }
-
-    .progress-container {
-      background-color: $capitec-grey;
-      width: 100%;
-      height: 4px;
-      border-radius: 2px;
-
-      .progress-bar {
-        background-color: $capitec-light-blue;
-        content: '';
-        height: 4px;
-        border-radius: 2px;
-        z-index: 1;
-      }
-    }
-  }
 }
 
 .main-container {
-  width: 100%;
-  max-width: 1320px;
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: 16px;
-  padding-left: 16px;
-  box-sizing: border-box;
+    width: 100%;
+    max-width: 1320px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 20px;
+    padding-left: 20px;
+    box-sizing: border-box;
 }
 
 .hero-section {
-  height: 80vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 2rem;
-
-  .content-side {
-    flex: 1;
-  }
-
-  .image-side {
-    flex: 1;
+    height: 80vh;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
+    gap: 2rem;
 
-    img {
-      max-width: 80%;
-      height: auto;
+    .content-side {
+        flex: 1;
     }
-  }
 
-  h1 {
-    font-style: normal;
-    font-weight: 700;
-    margin: 0;
-    font-size: clamp(28px, 4.5vw, 56px);
-    line-height: 1.2;
-    margin-bottom: 1rem;
-    color: $capitec-blue;
-  }
+    .image-side {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-  p {
-    margin-top: 0;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 1.5;
-    margin-bottom: 2rem;
-  }
+        img {
+            max-width: 80%;
+            height: auto;
+        }
+    }
 
-  .hero-cta {
-    display: flex;
-    gap: 1rem;
-  }
+    h1 {
+        font-style: normal;
+        font-weight: 700;
+        margin: 0;
+        font-size: clamp(28px, 4.5vw, 56px);
+        line-height: 1.2;
+        margin-bottom: 1rem;
+        color: $capitec-blue;
+    }
+
+    p {
+        margin-top: 0;
+        font-style: normal;
+        font-weight: 400;
+        font-size: clamp(18px, 4.5vw, 24px);
+        line-height: 1.5;
+        margin-bottom: 2rem;
+    }
+
+    .hero-cta {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+}
+
+.error,
+.error-text {
+    color: red !important;
+}
+
+@media (max-width: 768px) {
+    .hide-mobile {
+        display: none !important;
+    }
+
+    .hero-section {
+        flex-direction: column-reverse;
+    }
 }
 
 @import 'navbar';
